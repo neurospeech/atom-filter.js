@@ -6,10 +6,14 @@ Simple function to create filter with simple JSON syntax.
 How to use
 ----------
 
-    array.filter({ category: 'Action' });
+    var filtered = array.filter({ category: 'Action' });
 
 You can also pass function that will be forwarded to default filter function of array.
 
+To create filter function you can also use $f
+
+    var f = $f({ category: 'Action' });
+    var filtered = array.filter(f);
 
 Examples
 -------------
