@@ -6,8 +6,9 @@ Simple function to create filter with simple JSON syntax.
 How to use
 ----------
 
-    var filterFunction = $f( { category: 'Action' } );
-    array.filter(filterFunction);
+    array.filter({ category: 'Action' });
+
+You can also pass function that will be forwarded to default filter function of array.
 
 
 Examples

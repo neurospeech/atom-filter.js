@@ -27,7 +27,7 @@
             if (!item)
                 return;
             var i = n.indexOf('.');
-            if (i == -1) {
+            if (i === -1) {
                 return item[n];
             }
             var l = n.substr(0, i);
@@ -206,5 +206,25 @@
     };
 
     window.$f = AtomFilter.filter;
+
+    if (!Array.prototype.filter) {
+        Array.prototype.filter = function (f) {
+            var r = [];
+            for (var i = 0; i < this.length; i++) {
+                var v = this[i];
+                if (f(v, i)) r.push(v);
+            }
+            return r;
+        };
+    }
+
+    var af = Array.prototype.filter;
+
+    Array.prototype.filter = function (i) {
+        if (i instanceof Function || typeof i == 'function') {
+            return af.call(this,i);
+        }
+        return af.call(this, $f(i));
+    };
 
 })(window);

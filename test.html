@@ -23,7 +23,7 @@
         ];
 
         function test(input, q) {
-            var al = input.filter($f(q));
+            var al = input.filter(q);
             console.log(JSON.stringify(q, undefined, 2));
             console.log(JSON.stringify(al, undefined, 2));
         }
@@ -36,7 +36,9 @@
         test(a, { 'age !in': [31] });
         test(a, { 'broker.name': 'a1' });
         test(a, { $not: { 'broker.name': 'a1' } });
-        test(a, { $or: { 'age >':5, 'broker.name': 'a1' } });
+        test(a, { $or: { 'age >': 5, 'broker.name': 'a1' } });
+
+        test(a.filter(function () { return true; }), {  first: 'Akash' });
 
     </script>
 
