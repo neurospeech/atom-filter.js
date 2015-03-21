@@ -3,7 +3,14 @@ Atom Filter $f()
 
 Simple function to create filter with simple JSON syntax.
 
-Example Usage
+How to use
+----------
+
+    var filterFunction = $f( { category: 'Action' } );
+    array.filter(filterFunction);
+
+
+Examples
 -------------
 
     { name: 'akash' } 
@@ -62,7 +69,3 @@ Not operator
     { 'category !in': ['Drama','Documentory'] }
 
 
-Usage
-=====
-
-    array.filter($f( { category: 'Action' } ));
