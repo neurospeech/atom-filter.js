@@ -69,3 +69,46 @@ Not operator
     { 'category !in': ['Drama','Documentory'] }
 
 
+Contains operator
+-----------------
+For string values only, this does not raise error if any property chain is null. If any object in property chain returns null, function returns false.
+
+    { 'broker.name contains': 'ash' }
+
+equivalent of
+
+    function(item){
+        return ((broker || {}).name || '').indexOf('ash') !== -1;
+    }
+
+Any operator
+------------
+
+    { 'children': { name: 'Akash' } }
+
+equivalent of
+
+    function(item){
+
+        return item.children.filter( 
+            function(c){
+                c.name == 'Akash'
+            } )
+    }
+
+or in short...
+
+    function (item){
+        return item.children.filter($f({ name: 'Akash' }$)
+    }
+
+Regexp
+-------
+
+    { 'first ~': /^A/ }
+
+equivalent of
+
+    function (item){
+        return /^A/.test(item.name);
+    }

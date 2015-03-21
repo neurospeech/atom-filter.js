@@ -35,58 +35,91 @@
             return AtomFilter.get(item[l], n);
         },
 
-        compare: function (l, cmp, r) {
+        compare: function (cmp, r) {
             switch (cmp) {
                 case "==":
-                    return l == r;
+                    return function (l) {
+                        return l == r;
+                    }
                 case "<=":
-                    return l <= r;
+                    return function (l) {
+                        return l <= r;
+                    }
                 case ">=":
-                    return l >= r;
+                    return function (l) {
+                        return l >= r;
+                    }
                 case "<":
-                    return l < r;
+                    return function (l) {
+                        return l < r;
+                    }
                 case ">":
-                    return l > r;
-                case "!=":
-                    return l != r;
+                    return function (l) {
+                        return l > r;
+                    }
                 case "in":
-                    var ae = new AtomEnumerator(r);
-                    while (ae.next()) {
-                        var item = ae.current();
-                        if (item == l)
-                            return true;
+                    return function (l) {
+                        if (!l) return false;
+                        var ae = new AtomEnumerator(r);
+                        while (ae.next()) {
+                            var item = ae.current();
+                            if (item == l)
+                                return true;
+                        }
+                        return false;
                     }
-                    return false;
+
+                case "contains":
+                    return function (l) {
+                        if (!l) return false;
+                        return l.indexOf(r) !== -1;
+                    };
+
+
+                case "~":
+                    return function (l) {
+                        return r.test(l);
+                    };
+
+                // has a value in an array
                 case "has":
-                    return AtomFilter.compare(r, "in", l);
+                    return function (l) {
+                        if (!l) return false;
+                        var ae = new AtomEnumerator(l);
+                        while (ae.next()) {
+                            var item = ae.current();
+                            if (item == r)
+                                return true;
+                        }
+                        return false;
+                    }
                 case "any":
-                    var ae = new AtomEnumerator(l);
-                    var rf = AtomFilter.filter(r);
-                    while (ae.next()) {
-                        var item = ae.current();
-                        if (rf(item))
-                            return true;
+                    return function (l) {
+                        if (!l) return false;
+                        var ae = new AtomEnumerator(l);
+                        var rf = AtomFilter.filter(r);
+                        while (ae.next()) {
+                            var item = ae.current();
+                            if (rf(item))
+                                return true;
+                        }
+                        return false;
                     }
-                    return false;
                 case "all":
-                    var ae = new AtomEnumerator(l);
-                    var rf = AtomFilter.filter(r);
-                    while (ae.next()) {
-                        if (!rf(item))
-                            return false;
+                    return function (l) {
+                        if (!l) return false;
+                        var ae = new AtomEnumerator(l);
+                        var rf = AtomFilter.filter(r);
+                        while (ae.next()) {
+                            if (!rf(item))
+                                return false;
+                        }
+                        return true;
                     }
-                    return true;
-                case "none":
-                case "!all":
-                    return !AtomFilter.compare(l, "all", r);
-                case "!in":
-                    return !AtomFilter.compare(l, "in", r);
-                case "!has":
-                    return !AtomFilter.compare(l, "has", r);
-                case "!any":
-                    return !AtomFilter.compare(l, "any", r);
                 default:
-                    return false;
+                    return function (l) {
+                        return false;
+                    };
             }
         },
 
@@ -131,10 +164,24 @@
                 var left = function (item) {
                     return AtomFilter.get(item, n);
                 };
+                var filter = null;
+                if (cond.indexOf('!') !== 0) {
+                    var compF = AtomFilter.compare(cond, v);
+                    filter = function (item) {
+                        var l = left(item);
+                        return compF(l);
+                    };
 
-                ae.push(function (item) {
-                    return AtomFilter.compare(left(item), cond, v);
-                });
+                } else {
+                    cond = cond.substr(1);
+                    var compF = AtomFilter.compare(cond, v);
+                    filter = function (item) {
+                        var l = left(item);
+                        return !compF(l);
+                    };
+                }
+                ae.push(filter);
+
             }
 
             return function (item) {

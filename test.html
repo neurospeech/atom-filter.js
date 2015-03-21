@@ -29,9 +29,11 @@
         }
 
         test(a, { first: "Akash" });
+        test(a, { 'first contains': "ash" });
+        test(a, { 'first ~': /^A/ });
         test(a, true);
         test(a, { 'age >': 40 });
-        test(a, { 'age in': [31] });
+        test(a, { 'age !in': [31] });
         test(a, { 'broker.name': 'a1' });
         test(a, { $not: { 'broker.name': 'a1' } });
         test(a, { $or: { 'age >':5, 'broker.name': 'a1' } });
