@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="atom-filter.js"></script>
+</head>
+<body>
+
+    <script type="text/javascript">
+
+        var a = [
+            {
+                first: "Akash",
+                last: "Kava",
+                age: 31,
+                broker: {
+                    name: 'a1'
+                }
+            },
+            { first: "John", last: "Carter", age:45 }
+        ];
+
+        function test(input, q) {
+            var al = input.filter($f(q));
+            console.log(JSON.stringify(q, undefined, 2));
+            console.log(JSON.stringify(al, undefined, 2));
+        }
+
+        test(a, { first: "Akash" });
+        test(a, true);
+        test(a, { 'age >': 40 });
+        test(a, { 'age in': [31] });
+        test(a, { 'broker.name': 'a1' });
+        test(a, { $not: { 'broker.name': 'a1' } });
+        test(a, { $or: { 'age >':5, 'broker.name': 'a1' } });
+
+    </script>
+
+</body>
+</html>
