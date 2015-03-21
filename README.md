@@ -60,3 +60,9 @@ Not operator
 ------------
 
     { 'category !in': ['Drama','Documentory'] }
+
+
+Usage
+=====
+
+    array.filter($f( { category: 'Action' } ));
