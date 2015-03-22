@@ -94,10 +94,10 @@
                         return false;
                     }
                 case "any":
+                    var rf = AtomFilter.filter(r);
                     return function (l) {
                         if (!l) return false;
                         var ae = new AtomEnumerator(l);
-                        var rf = AtomFilter.filter(r);
                         while (ae.next()) {
                             var item = ae.current();
                             if (rf(item))
@@ -106,10 +106,10 @@
                         return false;
                     }
                 case "all":
+                    var rf = AtomFilter.filter(r);
                     return function (l) {
                         if (!l) return false;
                         var ae = new AtomEnumerator(l);
-                        var rf = AtomFilter.filter(r);
                         while (ae.next()) {
                             if (!rf(item))
                                 return false;
@@ -138,15 +138,24 @@
                 if (!q.hasOwnProperty(i))
                     continue;
                 var v = q[i];
-                if (/\$or/i.test(i)) {
+                if (i === '$or') {
+                    var orf = AtomFilter.filter(v, true);
                     ae.push(function (item) {
-                        return AtomFilter.filter(v, true)(item);
+                        return orf(item);
                     });
                     continue;
                 }
-                if (/\$not/i.test(i)) {
+                if (i === '$or') {
+                    var orf = AtomFilter.filter(v, false);
                     ae.push(function (item) {
-                        return !AtomFilter.filter(v, cor)(item);
+                        return orf(item);
+                    });
+                    continue;
+                }
+                if (i === '$not') {
+                    var fn = AtomFilter.filter(v, cor);
+                    ae.push(function (item) {
+                        return !fn(item);
                     });
                     continue;
                 }
