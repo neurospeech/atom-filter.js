@@ -191,10 +191,10 @@
             // compiles json object into function
             // that accepts object and returns true/false
 
-            if (q === true)
-                return AtomFilter.truef;
-            if (q === false || q === null || q === undefined)
+            if (q === false)
                 return AtomFilter.falsef;
+            if (!q)
+                return AtomFilter.truef;
 
             var ae = [];
 
