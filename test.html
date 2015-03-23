@@ -30,7 +30,7 @@
 
         test(a, { first: "Akash" });
         test(a, { 'first contains': "ash" });
-        test(a, { 'first ~': /^A/ });
+        test(a, { 'first startswith': "a" });
         test(a, true);
         test(a, { 'age >': 40 });
         test(a, { 'age !in': [31] });

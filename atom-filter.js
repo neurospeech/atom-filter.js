@@ -35,28 +35,105 @@
             return AtomFilter.get(item[l], n);
         },
 
+        escapeRegex: function (b, value, a, f) {
+            if (!value)
+                return {
+                    test: AtomFilter.falsef
+                };
+            var r = value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+            if (b) r = b + r;
+            if (a) r = r + a;
+            return new RegExp(r, f);
+        },
+
         compare: function (cmp, r) {
             switch (cmp) {
                 case "==":
                     return function (l) {
                         return l == r;
-                    }
+                    };
                 case "<=":
                     return function (l) {
                         return l <= r;
-                    }
+                    };
                 case ">=":
                     return function (l) {
                         return l >= r;
-                    }
+                    };
                 case "<":
                     return function (l) {
                         return l < r;
-                    }
+                    };
                 case ">":
                     return function (l) {
                         return l > r;
-                    }
+                    };
+                case "between":
+                    return function (l) {
+                        return l >= r[0] && l <= r[1];
+                    };
+                case "equals":
+                    r = AtomFilter.escapeRegex("^",r, "$", "i");
+                    return function (l) {
+                        if (!l)
+                            return !r;
+                        return r.test(l);
+                    };
+
+                case "contains":
+                    r = AtomFilter.escapeRegex("", r, "", "i");
+                    return function (l) {
+                        if (!l) return false;
+                        return r.test(l);
+                    };
+                case "startswith":
+                    r = AtomFilter.escapeRegex("^", r, "", "i");
+                    return function (l) {
+                        if (!l)
+                            return !r;
+                        return r.test(l);
+                    };
+                case "endswith":
+                    r = AtomFilter.escapeRegex("", r, "$", "i");
+                    return function (l) {
+                        if (!l)
+                            return !r;
+                        return r.test(l);
+                    };
+
+                case "equals":
+                    r = AtomFilter.escapeRegex("^", r, "$");
+                    return function (l) {
+                        if (!l)
+                            return !r;
+                        return r.test(l);
+                    };
+
+                case "containscs":
+                    r = AtomFilter.escapeRegex("", r, "");
+                    return function (l) {
+                        if (!l) return false;
+                        return r.test(l);
+                    };
+                case "startswithcs":
+                    r = AtomFilter.escapeRegex("^", r, "");
+                    return function (l) {
+                        if (!l)
+                            return !r;
+                        return r.test(l);
+                    };
+                case "endswithcs":
+                    r = AtomFilter.escapeRegex("", r, "$");
+                    return function (l) {
+                        if (!l)
+                            return !r;
+                        return r.test(l);
+                    };
+                case "~":
+                    return function (l) {
+                        return r.test(l);
+                    };
+
                 case "in":
                     return function (l) {
                         if (!l) return false;
@@ -67,21 +144,8 @@
                                 return true;
                         }
                         return false;
-                    }
-
-                case "contains":
-                    return function (l) {
-                        if (!l) return false;
-                        return l.indexOf(r) !== -1;
                     };
-
-
-                case "~":
-                    return function (l) {
-                        return r.test(l);
-                    };
-
-                // has a value in an array
+                    // has a value in an array
                 case "has":
                     return function (l) {
                         if (!l) return false;
