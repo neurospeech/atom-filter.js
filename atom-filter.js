@@ -145,7 +145,7 @@
                     });
                     continue;
                 }
-                if (i === '$or') {
+                if (i === '$and') {
                     var orf = AtomFilter.filter(v, false);
                     ae.push(function (item) {
                         return orf(item);
