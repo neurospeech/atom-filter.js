@@ -89,7 +89,7 @@ equivalent of
 Any operator
 ------------
 
-    { 'children': { name: 'Akash' } }
+    { 'children any': { name: 'Akash' } }
 
 equivalent of
 
@@ -98,13 +98,13 @@ equivalent of
         return item.children.filter( 
             function(c){
                 c.name == 'Akash'
-            } )
+            } ) ? true : false;
     }
 
 or in short...
 
     function (item){
-        return item.children.filter($f({ name: 'Akash' }$)
+        return item.children.filter($f({ name: 'Akash' }$) ? true : false;
     }
 
 Regexp
