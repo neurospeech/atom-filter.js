@@ -38,7 +38,11 @@
         test(a, { $not: { 'broker.name': 'a1' } });
         test(a, { $or: { 'age >': 5, 'broker.name': 'a1' } });
 
-        test(a.filter(function () { return true; }), {  first: 'Akash' });
+        test(a.filter(function () { return true; }), { first: 'Akash' });
+
+        a.sort('first desc, age ');
+
+        console.log(JSON.stringify(a, undefined, 2));
 
     </script>
 
