@@ -117,3 +117,22 @@ equivalent of
     function (item){
         return /^A/.test(item.name);
     }
+
+Multi Field Sorting
+=======
+
+    array.sort('Gender DESC,FirstName');
+    
+equivalent of
+
+    array.sort(function(a,b){
+        var ag = a.Gender;
+        var bg = b.Gender;
+        var n = bg.localeCompare(ag);
+        if(n!=0){
+            return n;
+        }
+        var af = a.FirstName;
+        var bf = b.FirstName;
+        return af.localeCompare(bf);
+    });
