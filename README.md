@@ -143,6 +143,6 @@ Operators
 ---------
 
      ASC - Case insensitive ascending order (default)
-     DESC - Case insensitive descending order (default)
-     CSASC - Case sensitive ascending order (default)
-     CSDESC - Case sensitive descending order (default)
+     DESC - Case insensitive descending order
+     CSASC - Case sensitive ascending order
+     CSDESC - Case sensitive descending order
