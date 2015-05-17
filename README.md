@@ -119,25 +119,35 @@ equivalent of
     }
 
 Multi Field Sorting
-=======
+===================
 
     array.sort('Gender DESC,FirstName');
     
 equivalent of
 
     array.sort(function(a,b){
-        var ag = a.Gender;
-        var bg = b.Gender;
+        if(!a){
+            return !b ? 0 : -1;
+        }
+        if(!b){
+            return 1;
+        }
+        var ag = (a.Gender || '').toLowerCase();
+        var bg = (b.Gender || '').toLowerCase();
         var n = bg.localeCompare(ag);
         if(n!=0){
             return n;
         }
-        var af = a.FirstName;
-        var bf = b.FirstName;
+        var af = (a.FirstName || '').toLowerCase();
+        var bf = (b.FirstName || '').toLowerCase();
         return af.localeCompare(bf);
     });
 
 Sorting case insensitive, to perform case sensitive, you should use operator CSASC for case sensitive ascending and CSDESC for case sensitive descending sorting.
+
+Null Safe
+---------
+The method is null safe, it does not throw null exceptions.
 
 Operators
 ---------
