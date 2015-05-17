@@ -136,3 +136,13 @@ equivalent of
         var bf = b.FirstName;
         return af.localeCompare(bf);
     });
+
+Sorting case insensitive, to perform case sensitive, you should use operator CSASC for case sensitive ascending and CSDESC for case sensitive descending sorting.
+
+Operators
+---------
+
+     ASC - Case insensitive ascending order (default)
+     DESC - Case insensitive descending order (default)
+     CSASC - Case sensitive ascending order (default)
+     CSDESC - Case sensitive descending order (default)
