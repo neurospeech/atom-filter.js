@@ -52,6 +52,10 @@
                     return function (l) {
                         return l == r;
                     };
+                case "!=":
+                    return function (l) {
+                        return l != r;
+                    };
                 case "<=":
                     return function (l) {
                         return l <= r;
