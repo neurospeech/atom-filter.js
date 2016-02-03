@@ -1,7 +1,7 @@
 Atom Filter $f()
 ================
 
-Simple function to create filter with simple JSON syntax.
+Simple function to create filter with simple JSON syntax. Arrow functions cannot be dynmically composed and serialized, but JSON based query can be easily composed dynamically and serialized as needed.
 
 How to use
 ----------
